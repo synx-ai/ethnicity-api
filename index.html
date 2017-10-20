@@ -178,7 +178,7 @@
 
         var auth = function (input_name, input_surname) {
           var auth_settings = {
-            "url": "http://ethnicity.synx.co/api/auth",
+            "url": "https://ethnicity.synx.co/api/auth",
             "method": "POST",
             "headers": {
               "content-type": "application/json"
@@ -191,7 +191,7 @@
 
           $.ajax(auth_settings).done(function (response) {
             var predict_settings = {
-              "url": "http://ethnicity.synx.co/api/predict",
+              "url": "https://ethnicity.synx.co/api/predict",
               "method": "POST",
               "headers": {
                 "content-type": "application/json",
