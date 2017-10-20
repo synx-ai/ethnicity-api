@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Synx ethnicity playground</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+    <script src="http://datamaps.github.io/scripts/0.5.8/datamaps.world.hires.min.js"></script>
+  </head>
+  <body>
+    <main role="main" class="container">
+
+      <div class="row">
+        <div class="col-12">
+          <div class="text-center">
+            <h1>Ethnicity Predictor</h1>
+            <p class="lead">Enter your name and see what it tells about your ethnicity.<br></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row text-center">
+        <div class="col align-self-center">
+          <form class="form-inline justify-content-center">
+            <label class="sr-only" for="inlineFormInputName2">Name</label>
+            <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="name" placeholder="Name">
+
+            <label class="sr-only" for="inlineFormInputGroupUsername2">Surname</label>
+            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+              <input type="text" class="form-control" id="surname" placeholder="Surname">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 align-self-center">
+          <div id="container" class="justify-content-center"></div>
+        </div>
+      </div>
+
+    </main>
+
+    <script>
+      $(document).ready(function() {
+        var map = new Datamap({
+          element: document.getElementById('container'),
+          responsive: true,
+          fills: {
+            major: "#1abc9c",
+            minor: "#7f8c8d",
+            defaultFill: '#ecf0f1'
+          },
+          geographyConfig: {
+            borderColor: '#ecf0f1',
+            popupTemplate: function(geography, data) { //this function should just return a string
+              return '<div class="hoverinfo"><strong>' + geography.properties.name + '</strong></div>';
+            },
+            popupOnHover: true, //disable the popup while hovering
+            highlightOnHover: true,
+            highlightFillColor: '#bdc3c7',
+            hideAntarctica: false
+          },
+          bubblesConfig: {
+            popupOnHover: true,
+            radius: null,
+            popupTemplate: function(geography, data) {
+              return '<div class="hoverinfo"><strong>' + data.name + '</strong></div>';
+            },
+            fillOpacity: 0.65,
+            animate: true,
+            highlightOnHover: true,
+            highlightFillColor: '#9100ff',
+            highlightBorderColor: 'rgba(250, 15, 160, 0.2)',
+            highlightFillOpacity: 0.75,
+          },
+          done: function(datamap) {
+
+          }
+        });
+
+        $(window).on('resize', function() {
+          map.resize();
+        });
+
+        var bubbles = [{
+          name: 'African American',
+          radius: 2,
+          centered: 'USA',
+        }, {
+          name: 'Africans',
+          radius: 2,
+          centered: 'CAF',
+        }, {
+          name: 'Celtic',
+          radius: 2,
+          centered: 'IRL',
+        }, {
+          name: 'East Asian and Pacific',
+          radius: 2,
+          centered: 'CHN',
+        }, {
+          name: 'East European',
+          radius: 2,
+          centered: 'BLR',
+        }, {
+          name: 'English',
+          radius: 2,
+          centered: 'GBR',
+        }, {
+          name: 'European',
+          radius: 2,
+          centered: 'BRA',
+        }, {
+          name: 'French',
+          radius: 2,
+          centered: 'FRA',
+        }, {
+          name: 'Germanic',
+          radius: 2,
+          centered: 'DEU',
+        }, {
+          name: 'Greek',
+          radius: 2,
+          centered: 'GRC',
+        }, {
+          name: 'Hispanic',
+          radius: 2,
+          centered: 'BRA',
+        }, {
+          name: 'Indian',
+          radius: 2,
+          centered: 'IND',
+        }, {
+          name: 'Italian',
+          radius: 2,
+          centered: 'ITA',
+        }, {
+          name: 'Japanese',
+          radius: 2,
+          centered: 'JPN',
+        }, {
+          name: 'Jewish and Amenian',
+          radius: 2,
+          centered: 'ARM',
+        }, {
+          name: 'Muslim',
+          radius: 2,
+          centered: 'YEM',
+        }, {
+          name: 'Nordic',
+          radius: 2,
+          centered: 'NOR',
+        }, {
+          name: 'Portuguese',
+          radius: 2,
+          centered: 'PRT',
+        }, {
+          name: 'South Asian',
+          radius: 2,
+          centered: 'MYS',
+        }, {
+          name: 'Unclassified',
+          radius: 2,
+          centered: 'ATA',
+        }];
+
+        var auth = function (input_name, input_surname) {
+          var auth_settings = {
+            "url": "http://ethnicity.synx.co/api/auth",
+            "method": "POST",
+            "headers": {
+              "content-type": "application/json"
+            },
+            "data": JSON.stringify({
+              username: "8AS19LAS26",
+              password: "c4ca4238a0b923820dcc509a6f75849b"
+            })
+          }
+
+          $.ajax(auth_settings).done(function (response) {
+            var predict_settings = {
+              "url": "http://ethnicity.synx.co/api/predict",
+              "method": "POST",
+              "headers": {
+                "content-type": "application/json",
+                "authorization": "JWT " + response.access_token
+              },
+              "data": JSON.stringify({
+                payload: [
+                  { name: input_name, surname: input_surname }
+                ]
+              })
+            }
+
+            $.ajax(predict_settings).done(function (predictions) {
+              console.log(predictions);
+
+              predictions.data.forEach(function(prediction) {
+                bubbles.forEach(function(bubble, idx) {
+                  if (prediction.classes.hasOwnProperty(bubble["name"])) {
+                    console.log(bubble["name"], prediction.ethnicity);
+                    bubbles[idx].fillKey = (bubble["name"] == prediction.ethnicity) ? "minor" : "minor";
+                    bubbles[idx].radius = Math.pow(30, 0.6 + prediction.classes[bubble["name"]]); // 70 * (prediction.classes[bubble["name"]] + 0.2);
+                  }
+                })
+              });
+
+              map.bubbles(bubbles);
+            });
+          });
+        }
+
+        $('form').submit(function(event) {
+          auth($('input[id=name]').val(), $('input[id=surname]').val());
+
+          event.preventDefault();
+        });
+
+
+      });
+    </script>
+  </body>
+</html>
+<!--
+TODO:
++ add bootstrap and jquery from CDN
++ data map load from jquery
+- add name and surname input boxes
++ jquery api call to auth chained to predict
+- update bubbles on response (set radius from class probabilities)
+- put a class legend you ethnicity is likely ____
+- PROFIT
+!-->
