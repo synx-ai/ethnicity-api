@@ -45,6 +45,14 @@
       </div>
 
       <div class="row">
+        <div class="col-12">
+          <div class="text-center">
+            <p id="ethnicity" class="lead"><br><br></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="col-12 align-self-center">
           <div id="container" class="justify-content-center"></div>
         </div>
@@ -137,7 +145,7 @@
         }, {
           name: 'Hispanic',
           radius: 2,
-          centered: 'BRA',
+          centered: 'COL',
         }, {
           name: 'Indian',
           radius: 2,
@@ -176,9 +184,13 @@
           centered: 'ATA',
         }];
 
+        var endpoint = (location.hostname === "localhost" || location.hostname === "127.0.0.1") ?
+          "http://localhost/api/" :
+          "https://ethnicity.synx.co/api/" ;
+
         var auth = function (input_name, input_surname) {
           var auth_settings = {
-            "url": "https://ethnicity.synx.co/api/auth",
+            "url": endpoint + "auth",
             "method": "POST",
             "headers": {
               "content-type": "application/json"
@@ -191,7 +203,7 @@
 
           $.ajax(auth_settings).done(function (response) {
             var predict_settings = {
-              "url": "https://ethnicity.synx.co/api/predict",
+              "url": endpoint + "predict",
               "method": "POST",
               "headers": {
                 "content-type": "application/json",
@@ -210,9 +222,11 @@
               predictions.data.forEach(function(prediction) {
                 bubbles.forEach(function(bubble, idx) {
                   if (prediction.classes.hasOwnProperty(bubble["name"])) {
-                    console.log(bubble["name"], prediction.ethnicity);
+                    $('#ethnicity').html("<br/>Your ethnicity is more likely to be <b>" + prediction.ethnicity + "</b>.");
                     bubbles[idx].fillKey = (bubble["name"] == prediction.ethnicity) ? "minor" : "minor";
                     bubbles[idx].radius = Math.pow(30, 0.6 + prediction.classes[bubble["name"]]); // 70 * (prediction.classes[bubble["name"]] + 0.2);
+                  } else {
+                    console.log()
                   }
                 })
               });
@@ -227,19 +241,7 @@
 
           event.preventDefault();
         });
-
-
       });
     </script>
   </body>
 </html>
-<!--
-TODO:
-+ add bootstrap and jquery from CDN
-+ data map load from jquery
-- add name and surname input boxes
-+ jquery api call to auth chained to predict
-- update bubbles on response (set radius from class probabilities)
-- put a class legend you ethnicity is likely ____
-- PROFIT
-!-->
